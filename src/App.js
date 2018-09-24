@@ -1,12 +1,23 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import TodoList from './TodoList.js'
 
 class App extends Component {
+  state = {
+    todos: [{
+      id: 1,
+      title: '123',
+    },{
+      id: 2,
+      title: 'abc',
+    },{
+      id: 3,
+      title: 'third',
+    }],
+  }
   render() {
     return (
-      <TodoList />
+      <TodoList todos={this.state.todos} />
     );
   }
 }
