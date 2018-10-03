@@ -1,20 +1,24 @@
 import React, { Component } from 'react';
 import './App.css';
 import TodoList from './TodoList.js'
+import Api from './api.js'
 
 class App extends Component {
   state = {
-    todos: [{
-      id: 1,
-      title: '123',
-    },{
-      id: 2,
-      title: 'abc',
-    },{
-      id: 3,
-      title: 'third',
-    }],
+    todos: [],
   }
+
+  componentDidMount() {
+      Api.getTodos()
+        .then(
+          (result) => {
+            this.setState({
+              todos: result
+            });
+          },
+        )
+    }
+
   render() {
     return (
       <TodoList todos={this.state.todos} />
