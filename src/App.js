@@ -9,7 +9,20 @@ import { Route, Switch } from 'react-router-dom'
 class App extends Component {
   state = {
     todos: [],
+    pendingTodo: {
+      text: '',
+      title: '',
+    },
   }
+
+  handleTextChange = e => this.setState({ pendingTodo: { ...this.state.pendingTodo, text: e.target.value }});
+  handleTitleChange = e => this.setState({ pendingTodo: { ...this.state.pendingTodo, title: e.target.value }});
+  newTodoSubmitHandler = () => {
+    this.setState({
+      todos: [...this.state.todos, this.state.pendingTodo],
+      pendingTodo: {},
+    }, () => { Api.saveTodos(this.state.todos) })
+  };
 
   componentDidMount() {
       Api.getTodos()
@@ -27,7 +40,13 @@ class App extends Component {
       <Switch>
         <Route
           path='/new'
-          component={NewItem}
+          render={(props) =>
+            <NewItem
+              {...props}
+              handleTextChange={this.handleTextChange}
+              handleTitleChange={this.handleTitleChange}
+              newTodoSubmitHandler={this.newTodoSubmitHandler}
+            />}
         />
         <Route
           path='/'
