@@ -9,7 +9,11 @@ class TodoList extends Component {
       <div>
         <Link to="/new">Create New Todo</Link>
         <ul>
-          {this.props.todos.map((todo) => <TodoItem key={todo.id} todo={todo}></TodoItem>)}
+          {this.props.todos.map((todo) =>
+            <Link key={todo.id} to={`/${todo.id}`}>
+              <TodoItem todo={todo}></TodoItem>
+            </Link>
+          )}
         </ul>
       </div>
     );

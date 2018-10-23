@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import TodoList from './TodoList.js'
 import NewItem from './NewItem'
+import DetailItem from './DetailItem'
 import Api from './api.js'
 
 import { Route, Switch } from 'react-router-dom'
@@ -19,7 +20,10 @@ class App extends Component {
   handleTitleChange = e => this.setState({ pendingTodo: { ...this.state.pendingTodo, title: e.target.value }});
   newTodoSubmitHandler = () => {
     this.setState({
-      todos: [...this.state.todos, this.state.pendingTodo],
+      todos: [...this.state.todos, {
+        ...this.state.pendingTodo,
+        id: this.state.todos.reduce((prev, todo) => Math.max(prev, todo.id), 0) + 1,
+      }],
       pendingTodo: {},
     }, () => { Api.saveTodos(this.state.todos) })
   };
@@ -46,6 +50,14 @@ class App extends Component {
               handleTextChange={this.handleTextChange}
               handleTitleChange={this.handleTitleChange}
               newTodoSubmitHandler={this.newTodoSubmitHandler}
+            />}
+        />
+        <Route
+          path='/:id'
+          render={(props) =>
+            <DetailItem
+              {...props}
+              todos={this.state.todos}
             />}
         />
         <Route
