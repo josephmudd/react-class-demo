@@ -18,6 +18,35 @@ class App extends Component {
 
   handleTextChange = e => this.setState({ pendingTodo: { ...this.state.pendingTodo, text: e.target.value }});
   handleTitleChange = e => this.setState({ pendingTodo: { ...this.state.pendingTodo, title: e.target.value }});
+  setTitleById = (title, idToChange) => {
+    this.setState({
+      todos: this.state.todos.map((todo) => {
+        if (todo.id === idToChange) {
+          return {
+            ...todo,
+            title,
+          };
+        } else {
+          return todo;
+        }
+      }),
+    });
+  }
+  setTextById = (text, idToChange) => {
+    this.setState({
+      todos: this.state.todos.map((todo) => {
+        if (todo.id === idToChange) {
+          return {
+            ...todo,
+            text,
+          };
+        } else {
+          return todo;
+        }
+      }),
+    });
+  }
+
   newTodoSubmitHandler = () => {
     this.setState({
       todos: [...this.state.todos, {
@@ -27,6 +56,8 @@ class App extends Component {
       pendingTodo: {},
     }, () => { Api.saveTodos(this.state.todos) })
   };
+
+  editTodoSubmitHandler = () => Api.saveTodos(this.state.todos);
 
   componentDidMount() {
       Api.getTodos()
@@ -57,6 +88,9 @@ class App extends Component {
           render={(props) =>
             <DetailItem
               {...props}
+              setTitle={this.setTitleById}
+              setText={this.setTextById}
+              editTodoSubmitHandler={this.editTodoSubmitHandler}
               todos={this.state.todos}
             />}
         />
