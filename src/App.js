@@ -53,16 +53,25 @@ class App extends Component {
         ...this.state.pendingTodo,
         id: this.state.todos.reduce((prev, todo) => Math.max(prev, todo.id), 0) + 1,
       }],
-      pendingTodo: {},
-    }, () => { Api.saveTodos(this.state.todos) })
+    }, () => { Api.createTodo(this.state.pendingTodo) })
+    Api.getTodos()
+      .then(
+        (result) => {
+          console.log(result)
+          this.setState({
+            todos: result
+          });
+        },
+      )
   };
 
-  editTodoSubmitHandler = () => Api.saveTodos(this.state.todos);
+  editTodoSubmitHandler = (id) => Api.updateTodo(this.state.todos.find(todo => todo.id === id));
 
   componentDidMount() {
       Api.getTodos()
         .then(
           (result) => {
+            console.log(result)
             this.setState({
               todos: result
             });
