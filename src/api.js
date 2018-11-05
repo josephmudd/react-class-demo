@@ -1,19 +1,26 @@
 export default {
   getTodos(){
-    return fetch("https://crudapi.codelouisville.org/users/jmudd-demo/todos")
+    return fetch("https://codelouisville-20029.firebaseio.com/todos.json")
       .then(res => res.json());
   },
-  saveTodos(todos){
-    const data = {
-      name: "todos",
-      documents: todos,
-    };
-    return fetch("https://crudapi.codelouisville.org/users/jmudd-demo/todos", {
+  addTodo(todo){
+    return fetch("https://codelouisville-20029.firebaseio.com/todos.json", {
       method: "POST",
-      body: JSON.stringify(data),
+      body: JSON.stringify(todo),
       headers: {
         'Content-Type': 'application/json'
       },
-    });
+    })
+      .then(res => res.json());
+  },
+  saveTodo(id, todos){
+    return fetch(`https://codelouisville-20029.firebaseio.com/todos/${id}.json`, {
+      method: "PUT",
+      body: JSON.stringify(todos.find(todo => todo.id === id)),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
+      .then(res => res.json());
   }
 }
